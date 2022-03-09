@@ -31,8 +31,8 @@
     
     git push//上傳至雲端
 ```
-```
 # Week03
+```
 1.把上週的程式從GitHub下載
   打開Git Bash輸入以下指令即完成:
   cd desktop
