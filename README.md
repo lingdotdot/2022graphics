@@ -1,5 +1,6 @@
 # 2022graphics
 # Week01
+```
 1.OpenGL專案
     打開OpenGL專案
 2.WebGL專案
@@ -29,7 +30,8 @@
     git commit -m"上傳名稱"
     
     git push//上傳至雲端
-
+```
+```
 # Week03
 1.把上週的程式從GitHub下載
   打開Git Bash輸入以下指令即完成:
@@ -47,7 +49,7 @@
     製作以下兩個簡易版程式:
         1.一個做出實心茶壺，檔案名稱:week03_color
         2.一個是三色(上次上課)，三色三角形 檔案名稱:week03-2_color_triangle 彩色三角形
-
+```
 week03_color程式碼如下:
 ```C++
 #include <GL/glut.h>
