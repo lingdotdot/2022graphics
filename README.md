@@ -106,3 +106,154 @@ int main(int argc,char**argv)
     return 0;
 }
 ```
+回家作業程式碼:
+```C++
+#include <GL/glut.h>
+static void display(void)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_QUADS);
+    glColor3ub(209, 1, 1);
+    glVertex2f((344-200)/200.0, -(84-200)/200.0);
+    glVertex2f((344-200)/200.0,  -(289-200)/200.0);
+    glVertex2f((33-200)/200.0, - (289-200)/200.0);
+    glVertex2f((33-200)/200.0,  -(84-200)/200.0);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3ub(0, 0, 142);
+    glVertex2f((33-200)/200.0, -(84-200)/200.0);
+    glVertex2f((188-200)/200.0,  -(84-200)/200.0);
+    glVertex2f((187-200)/200.0, - (185-200)/200.0);
+    glVertex2f((33-200)/200.0,  -(186-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((105-200)/200.0, -(113-200)/200.0);
+    glVertex2f((109-200)/200.0,  -(95-200)/200.0);
+    glVertex2f((115-200)/200.0, - (113-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((116-200)/200.0, -(113-200)/200.0);
+    glVertex2f((128-200)/200.0,  -(102-200)/200.0);
+    glVertex2f((125-200)/200.0, - (118-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((126-200)/200.0, -(118-200)/200.0);
+    glVertex2f((141-200)/200.0,  -(116-200)/200.0);
+    glVertex2f((131-200)/200.0, - (127-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((132-200)/200.0, -(130-200)/200.0);
+    glVertex2f((147-200)/200.0,  -(134-200)/200.0);
+    glVertex2f((132-200)/200.0, - (137-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((131-200)/200.0, -(142-200)/200.0);
+    glVertex2f((141-200)/200.0,  -(152-200)/200.0);
+    glVertex2f((127-200)/200.0, - (150-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((125-200)/200.0, -(151-200)/200.0);
+    glVertex2f((129-200)/200.0,  -(168-200)/200.0);
+    glVertex2f((117-200)/200.0, - (156-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((105-200)/200.0, -(113-200)/200.0);
+    glVertex2f((109-200)/200.0,  -(95-200)/200.0);
+    glVertex2f((115-200)/200.0, - (113-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((116-200)/200.0, -(156-200)/200.0);
+    glVertex2f((109-200)/200.0,  -(172-200)/200.0);
+    glVertex2f((105-200)/200.0, - (156-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((105-200)/200.0, -(113-200)/200.0);
+    glVertex2f((109-200)/200.0,  -(95-200)/200.0);
+    glVertex2f((115-200)/200.0, - (113-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((103-200)/200.0, -(155-200)/200.0);
+    glVertex2f((90-200)/200.0,  -(167-200)/200.0);
+    glVertex2f((94-200)/200.0, - (152-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((93-200)/200.0, -(148-200)/200.0);
+    glVertex2f((76-200)/200.0,  -(150-200)/200.0);
+    glVertex2f((88-200)/200.0, - (141-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((87-200)/200.0, -(139-200)/200.0);
+    glVertex2f((72-200)/200.0,  -(134-200)/200.0);
+    glVertex2f((87-200)/200.0, - (131-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((88-200)/200.0, -(127-200)/200.0);
+    glVertex2f((76-200)/200.0,  -(115-200)/200.0);
+    glVertex2f((92-200)/200.0, - (119-200)/200.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3ub(255, 255, 255);
+    glVertex2f((95-200)/200.0, -(116-200)/200.0);
+    glVertex2f((90-200)/200.0,  -(101-200)/200.0);
+    glVertex2f((103-200)/200.0, - (113-200)/200.0);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(255, 255, 255);
+    glVertex2f((99-200)/200.0, -(116-200)/200.0);
+    glVertex2f((109-200)/200.0,  -(114-200)/200.0);
+    glVertex2f((119-200)/200.0, - (116-200)/200.0);
+    glVertex2f((126-200)/200.0, -(124-200)/200.0);
+    glVertex2f((129-200)/200.0,  -(134-200)/200.0);
+    glVertex2f((125-200)/200.0, - (145-200)/200.0);
+    glVertex2f((120-200)/200.0, -(150-200)/200.0);
+    glVertex2f((110-200)/200.0,  -(153-200)/200.0);
+    glVertex2f((100-200)/200.0, - (151-200)/200.0);
+    glVertex2f((92-200)/200.0, -(144-200)/200.0);
+    glVertex2f((90-200)/200.0,  -(134-200)/200.0);
+    glVertex2f((92-200)/200.0, - (124-200)/200.0);
+    glEnd();
+
+    glutSwapBuffers();
+}
+
+int main(int argc,char**argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week03");
+
+    glutDisplayFunc( display );
+
+    glutMainLoop();
+    return 0;
+}
+```
