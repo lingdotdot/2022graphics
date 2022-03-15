@@ -16,7 +16,7 @@
     
     準備步驟
     cd desktop
-    git clone http://倉庫網址
+    git clone http://倉庫網址  網址:github.com/lingdotdot/2022graphics
     
     修改的檔案
     cd 2022graphics
