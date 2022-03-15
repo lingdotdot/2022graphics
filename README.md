@@ -309,7 +309,7 @@ int main(int argc,char**argv)
         要記得要加上glPushMatrix() glPopMatrix()這兩行程式碼，以免移動數值累積，造成茶壺一直亂動
 ```
  ```C++
-    void display()
+ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();///push備份矩陣
@@ -331,7 +331,7 @@ int main( int argc, char**argv )
     glutMainLoop();
 }
 ```
-    如何把分配四個茶壺的位置:
+    如何分配四個茶壺的位置:
 ```C++
 #include <GL/glut.h>
 void myTeapot(float x, float y)///自訂的函式
