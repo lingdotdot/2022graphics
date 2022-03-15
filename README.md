@@ -259,6 +259,7 @@ int main(int argc,char**argv)
 ```
 
 # Week04
+```
 上課內容:
       下載範例:下載網址: jsyeh.org/3dcg10 
       把data&win32兩個檔案下載下來，並且解壓縮。
@@ -460,7 +461,8 @@ int main( int argc, char**argv )
     glutMainLoop();
 }
 ```
-#
+
+```
     
     
     
