@@ -309,7 +309,7 @@ int main(int argc,char**argv)
         要記得要加上glPushMatrix() glPopMatrix()這兩行程式碼，以免移動數值累積，造成茶壺一直亂動
 ```
  ```C++
-        void display()
+    void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();///push備份矩陣
@@ -333,7 +333,7 @@ int main( int argc, char**argv )
 ```
     如何把分配四個茶壺的位置:
 ```C++
-    #include <GL/glut.h>
+#include <GL/glut.h>
 void myTeapot(float x, float y)///自訂的函式
 {
     glPushMatrix();///push備份矩陣
@@ -429,7 +429,7 @@ int main( int argc, char**argv )
     上課的最後一個程式:老師發明了一個程式，透過這個程式我們可以用滑鼠直接畫圖之外，小黑窗也會把座標
     備份在mx[i]&my[i]裡面，並印出來，方便我們畫出更漂亮的圖。
 ```C++
-    #include <GL/glut.h>
+#include <GL/glut.h>
 #include <stdio.h>
 int mouseX=0, mouseY=0, N=0;///N個點!!!
 int mx[100], my[100];///用來記錄,等一下要畫出來哦!!!
