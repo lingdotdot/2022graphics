@@ -273,7 +273,8 @@ int main(int argc,char**argv)
       
       關於作業2加分:
         畫圓的範例程式碼:
-        ```C++
+```
+```C++
         #include <GL/glut.h>
         #include <math.h>
         void display()
@@ -299,12 +300,14 @@ int main(int argc,char**argv)
                 glutMainLoop();
          }
 ```
+```
 正式上課內容:
         
         主題一-Translate移動
         製作一個新專案:week04_translate
         嘗試用程式移動紅色茶壺的位置。
         要記得要加上glPushMatrix() glPopMatrix()這兩行程式碼，以免移動數值累積，造成茶壺一直亂動
+```
  ```C++
         void display()
 {
@@ -329,7 +332,7 @@ int main( int argc, char**argv )
 }
 ```
     如何把分配四個茶壺的位置:
-    ```C++
+```C++
     #include <GL/glut.h>
 void myTeapot(float x, float y)///自訂的函式
 {
@@ -365,8 +368,8 @@ int main( int argc, char**argv )
     左鍵0，中鍵1，右鍵2
     按下去0，放開1
     座標為0...300的值
-    ```C++
-    #include <GL/glut.h>
+```C++
+#include <GL/glut.h>
 #include <stdio.h>///printf()
 void display()
 {
@@ -388,12 +391,13 @@ int main( int argc, char**argv )
     glutMouseFunc(mouse);///Mouse滑鼠
     glutMainLoop();
 }
-    ```
-    
+```
+```
    用滑鼠事件來做座標換算:
    由於OpenGL是用"正中間0,0;左邊-1,右邊+1，下面-1,上面+1"所以要做座標換算。
    老師給的口訣是:減一半，除一半，y變負值
-   ```C++
+```
+```C++
 #include <GL/glut.h>
 #include <stdio.h>
 int mouseX=0, mouseY=0;
@@ -422,10 +426,9 @@ int main( int argc, char**argv )
     glutMainLoop();
 }
 ```
-    
     上課的最後一個程式:老師發明了一個程式，透過這個程式我們可以用滑鼠直接畫圖之外，小黑窗也會把座標
     備份在mx[i]&my[i]裡面，並印出來，方便我們畫出更漂亮的圖。
-    ```C++
+```C++
     #include <GL/glut.h>
 #include <stdio.h>
 int mouseX=0, mouseY=0, N=0;///N個點!!!
@@ -461,9 +464,6 @@ int main( int argc, char**argv )
     glutMainLoop();
 }
 ```
-
-```
-    
     
     
         
