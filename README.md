@@ -8,7 +8,7 @@
 3.GLUT專案
     moodle上下載freeglut
     把freeglut檔案解壓縮後放桌面
-    改freeglut裡lib裡最短的檔案:改成:libglut32.a
+    複製freeglut裡lib裡最短的檔案/並更改檔案名稱為:libglut32.a
     開啟新的GLUT專案
     專案名取好，並把專案位置設為桌面上的freeglut
 4.利用指令，雲端上傳今天的程式碼
