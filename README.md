@@ -464,7 +464,191 @@ int main( int argc, char**argv )
     glutMainLoop();
 }
 ```
+
+# Week05
+
+上課內容:
+1.打開今天的上課範例/網址:http://jsyeh.org/3dcg10
+    下載data/解壓縮/data放進解壓縮後的windows資料夾
+    下載win32/解壓縮/執行transform.exe
     
+    右上角按滑鼠右鍵，可以換模型
+    下方glRotatef()函式可以調數值(角度,x,y,z)
+    並觀察與練習調整數值的旋轉效果。(0,1,0)(0,-1,0)(1,0,0)(0,0,1)(1,1,0)，配合安培右手(可以知道怎麼旋轉)
+2.寫blogger的小秘密:可以利用gist.github.com，分享或存放程式碼到blogger裡。
+3.實作程式碼:撰寫一個會依數值旋轉的黃色茶壺
+    使用glRotatef(角度,0,0,0)函式，調整角度的數值
+    程式碼如下:
+```C++
+    
+#include <GL/glut.h>
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        glRotatef(180,0,0,1);
+        glColor3f(1,1,0);
+        glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+}
+
+int main(int argc,char**argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week05 Rotate");
+
+    glutDisplayFunc( display );
+
+    glutMainLoop();
+    return 0;
+}
+```
+4.改良上一個程式，加入mouse互動，會很酷!利用glutMotionFunc()，茶壺旋轉的角度會跟著滑鼠改變
+    程式碼如下:
+```C++
+#include <GL/glut.h>
+float angle=0;
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        glRotatef(angle,0,0,1);
+        glColor3f(1,1,0);
+        glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+}
+void motion(int x,int y)
+{
+    angle=x;
+    display();
+}
+int main(int argc,char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week05 mouse Motion");
+
+    glutDisplayFunc( display );
+    glutMotionFunc(motion);
+    glutMainLoop();
+}
+```
+5.改良上一個程式碼，讓轉動更順。利用mouse函式&motion函式，再利用一點計算。
+  程式碼如下:
+```C++
+#include <GL/glut.h>
+float angle=0,oldX=0;
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        glRotatef(angle,0,0,1);
+        glColor3f(1,1,0);
+        glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+}
+void mouse(int button,int state,int x,int y)
+{
+    oldX=x;
+}
+void motion(int x,int y)
+{
+    angle+=(x-oldX);
+    oldX = x;
+    display();
+}
+int main(int argc,char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week05 mouse Motion");
+
+    glutDisplayFunc( display );
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+    glutMainLoop();
+}
+```
+6.複習上周的上課內容。包含mosue&GL_LINE_LOOP
+程式碼一:利用滑鼠點擊的點，把線連起來，製作圖案。
+```C++
+#include <stdio.h>
+#include <GL/glut.h>
+int N=0;
+int x[1000],y[1000];
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_LINE_LOOP);
+    for(int i=0;i<N;i++){
+        glVertex2f((x[i]-150)/150.0,-(y[i]-150)/150.0);
+    }
+    glEnd();
+    glutSwapBuffers();
+}
+void mouse(int button,int state,int mouseX,int mouseY)
+{
+    if(state==GLUT_DOWN){
+        N++;
+        x[N-1]=mouseX;
+        y[N-1]=mouseY;
+        printf("現在按下滑鼠，得到新座標 %d %d\n",x[N-1],y[N-1]);
+    }
+    display();
+}
+int main(int argc,char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week05 mouse Motion");
+
+    glutDisplayFunc( display );
+    glutMouseFunc(mouse);
+    glutMainLoop();
+}
+```
+    程式碼二:改良上一個程式，把Mouse函式改成Motion函式，可以利用滑鼠連續畫線製作圖案。
+```C++
+#include<stdio.h>
+#include <GL/glut.h>
+int N=0;
+int x[1000],y[1000];
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_LINE_LOOP);
+    for(int i=0;i<N;i++){
+        glVertex2f((x[i]-150)/150.0,-(y[i]-150)/150.0);
+    }
+    glEnd();
+    glutSwapBuffers();
+}
+void motion(int mouseX,int mouseY)
+{
+        N++;
+        x[N-1]=mouseX;
+        y[N-1]=mouseY;
+        printf("現在按下滑鼠，得到新座標 %d %d\n",x[N-1],y[N-1]);
+    display();
+}
+int main(int argc,char** argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week05 mouse Motion");
+
+    glutDisplayFunc( display );
+    glutMotionFunc(motion);
+    glutMainLoop();
+}
+```
+今天上課內容結束。
+
+
     
         
       
