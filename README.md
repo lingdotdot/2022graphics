@@ -868,7 +868,7 @@ int main(int argc, char**argv)
     glutMainLoop();
 }
 ```
-三之二:今天的最後最後，要加上旋轉。最後就可以模仿wer完整的maya介面。如果按下e||E，now=2，會做旋轉。補充:glutInitWindowSize(500,500)可以放大視窗(注意:glTranslate()裡面減一半除一半的值要做修改，這樣茶壺才會在適當的位置。)。
+三之二:今天的最後最後，要加上旋轉。最後就可以模仿wer完整的maya介面。如果按下e||E，now=2，會做旋轉。補充:glutInitWindowSize(500,500)可以放大視窗(注意:glTranslatef()裡面減一半除一半的值要做修改，這樣茶壺才會在適當的位置。)。
 ```C
 #include <GL/glut.h>
 #include <stdio.h>
