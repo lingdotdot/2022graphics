@@ -658,7 +658,119 @@ int main(int argc,char** argv)
     程式碼旁邊可以切換Swap Translate/Rotate
         公轉&自轉
 實作程式:
-一:
+一:上課主題:keyboard，先上moodle下載freeglut資料夾，並把最短改更短lib修改，打開一個新的GLUT專案。今天的第一個小程式，希望能做keyboard的互動。先把最基礎的茶壺程式複製進來，再改幾行程式碼就完成了。重點程式碼為glutKeyboardFunc(keyboard)，再去定義void keyboard(unsigned char key,int x,int y)函式。這個程式可以利用printf()印出鍵盤的值。記得:使用printf()要引用#include<stdio.h>。
+```C++
+#include <GL/glut.h>
+#include <stdio.h>
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+        glColor3f( 1, 1, 0 );
+        glutSolidTeapot(0.3);
+    glutSwapBuffers();
+}
+void keyboard( unsigned char key, int x, int y )
+{
+    printf("現在按下:%c 座標在:%d %d\n", key, x, y);
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week06 keyboard");
+
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+
+    glutMainLoop();
+}
+```
+二:我們改了一下剛剛的程式，把keyboard()，再搭配mouse()和motion()函式，希望可以做到更完整的互動。因為怕一次做太多，同學跟不上，所以熱血小葉老師決定先定義好程式就好。
+```C
+#include <GL/glut.h>
+#include <stdio.h>
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+        glColor3f( 1, 1, 0 );
+        glutSolidTeapot(0.3);
+    glutSwapBuffers();
+}
+void keyboard( unsigned char key, int x, int y )
+{
+    printf("現在按下:%c 座標在:%d %d\n", key, x, y);
+}
+void mouse( int button, int state, int x, int y )
+{
+}
+void motion( int x, int y )
+{
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week06 keyboard mouse motion");
+
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+
+    glutMainLoop();
+}
+```
+二之二:把glTranslatef()拿出來用。這個程式就可以做到茶壺跟著滑鼠座標移動。
+```C
+#include <GL/glut.h>
+#include <stdio.h>
+float x=0, y=0, z=0, oldX, oldY;
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        glTranslatef(  (x-150)/150.0  , -(y-150)/150.0  ,  z  ); ///Maya: w
+        ///glRotatef( angle,  0, 0, 1);
+        ///glScalef( scale, scale, scale );
+        glColor3f( 1, 1, 0 );
+        glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+}
+void keyboard( unsigned char key, int mouseX, int mouseY )
+{
+    printf("現在按下:%c 座標在:%d %d\n", key, mouseX, mouseY);
+}
+void mouse( int button, int state, int mouseX, int mouseY )
+{
+    oldX = mouseX; oldY = mouseY;
+}
+void motion( int mouseX, int mouseY )
+{
+    x += (mouseX-oldX);
+    y += (mouseY-oldY);
+    oldX = mouseX; oldY = mouseY;
+    display();
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week06 keyboard mouse motion");
+
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+
+    glutMainLoop();
+}
+```
+二之三:接下來，因為今日的最後目標是要製作一個鍵盤功能，去模仿maya和unity的移動，縮放，旋轉的效果。所以接下來要實作出一個縮放程式，利用創一個新變數float scale，去判斷mouseX是否大於或小於oldX，如果大於，茶壺就會變大1%。相反的，如果小於，茶壺的大小就會變小1%。完成!
+```C
+
+
+
 
 
 
