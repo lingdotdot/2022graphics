@@ -648,6 +648,19 @@ int main(int argc,char** argv)
 ```
 今天上課內容結束。
 
+# Week06
+上課內容:
+1.介紹電腦圖學之父 Ivan Sutherland (Sketchpad)的故事。印象深刻，這位厲害的人在跟我年紀差不多的時候雖然差點沒辦法畢業，但發明了電腦圖學，他是有多大的勇氣，上台發表自己做的東西。
+2.課本範例:網址:jsyeh.org/3dcg10
+    data/data.zip/解壓縮後/放進已解壓縮後的windows資料夾裡
+    win32/windows.zip/解壓縮後/執行Transformation.exe
+    
+    程式碼旁邊可以切換Swap Translate/Rotate
+        公轉&自轉
+實作程式:
+一:
+
+
 
     
         
