@@ -768,7 +768,164 @@ int main(int argc, char**argv)
 ```
 二之三:接下來，因為今日的最後目標是要製作一個鍵盤功能，去模仿maya和unity的移動，縮放，旋轉的效果。所以接下來要實作出一個縮放程式，利用創一個新變數float scale，去判斷mouseX是否大於或小於oldX，如果大於，茶壺就會變大1%。相反的，如果小於，茶壺的大小就會變小1%。完成!
 ```C
+#include <GL/glut.h>
+#include <stdio.h>
+float x=0, y=0, z=0, scale=1.0, oldX, oldY;
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        //glTranslatef(  (x-150)/150.0  , -(y-150)/150.0  ,  z  ); ///Maya: w
+        ///glRotatef( angle,  0, 0, 1);
+        glScalef( scale, scale, scale ); ///Maya: r
+        glColor3f( 1, 1, 0 );
+        glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+}
+void keyboard( unsigned char key, int mouseX, int mouseY )
+{
+    printf("現在按下:%c 座標在:%d %d\n", key, mouseX, mouseY);
+}
+void mouse( int button, int state, int mouseX, int mouseY )
+{
+    oldX = mouseX; oldY = mouseY;
+}
+void motion( int mouseX, int mouseY )
+{
+    if( mouseX>oldX ) scale = scale * 1.01;
+    if( mouseX<oldX ) scale = scale * 0.99;
+    //x += (mouseX-oldX);
+    //y += (mouseY-oldY);
+    oldX = mouseX; oldY = mouseY;
+    display();
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week06 keyboard mouse motion");
 
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+
+    glutMainLoop();
+}
+```
+三之一:那我們會縮放&移動之後，要模仿maya的介面，搭配鍵盤的判斷。如果鍵盤按下w||W，now=1，做移動。如果鍵盤按下r||R，now=3，做縮放。在motion()裡，判斷按下的是什麼按鍵，並完成動作的計算。完成!
+```C
+#include <GL/glut.h>
+#include <stdio.h>
+float x=150, y=150, z=0, scale=1.0, angle=0.0, oldX, oldY;
+int now=1;///1:移動, 2:旋轉, 3:縮放
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        glTranslatef( (x-150)/150.0 , -(y-150)/150.0 , z ); ///Maya: w
+        //glRotatef( angle,  0, 0, 1); ///Maya: e
+        glScalef( scale, scale, scale ); ///Maya: r
+        glColor3f( 1, 1, 0 );
+        glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+}
+void keyboard( unsigned char key, int mouseX, int mouseY )
+{   //printf("現在按下:%c 座標在:%d %d\n", key, mouseX, mouseY);
+    if(key=='w' || key=='W') now=1;///移動 (小心不要中文)
+    //if(key=='e' || key=='E') now=2;///旋轉
+    if(key=='r' || key=='R') now=3;///縮放
+}
+void mouse( int button, int state, int mouseX, int mouseY )
+{
+    oldX = mouseX; oldY = mouseY;
+}
+void motion( int mouseX, int mouseY )
+{
+    if(now==1){///移動
+        x += (mouseX-oldX);
+        y += (mouseY-oldY);
+    }else if(now==3){///縮放
+        if( mouseX>oldX ) scale = scale * 1.01;
+        if( mouseX<oldX ) scale = scale * 0.99;
+    }
+    oldX = mouseX; oldY = mouseY;
+    display();
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week06 keyboard mouse motion");
+
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+
+    glutMainLoop();
+}
+```
+三之二:今天的最後最後，要加上旋轉。最後就可以模仿wer完整的maya介面。如果按下e||E，now=2，會做旋轉。補充:glutInitWindowSize(500,500)可以放大視窗(注意:glTranslate()裡面減一半除一半的值要做修改，這樣茶壺才會在適當的位置。)。
+```C
+#include <GL/glut.h>
+#include <stdio.h>
+float x=250, y=250, z=0, scale=1.0, angle=0.0, oldX, oldY;
+int now=1;///1:移動, 2:旋轉, 3:縮放
+void display()
+{
+    glClearColor(0.5, 0.5, 0.5, 1);///用來 Clear的色彩 R,G,B,A Alpha沒用到
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        glTranslatef( (x-250)/250.0 , -(y-250)/250.0 , z ); ///Maya: w
+        glRotatef( angle,  0, 0, 1); ///Maya: e
+        glScalef( scale, scale, scale ); ///Maya: r
+        glColor3f( 1, 1, 0 );
+        glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+}
+void keyboard( unsigned char key, int mouseX, int mouseY )
+{   //printf("現在按下:%c 座標在:%d %d\n", key, mouseX, mouseY);
+    if(key=='w' || key=='W') now=1;///移動 (小心不要中文)
+    if(key=='e' || key=='E') now=2;///旋轉
+    if(key=='r' || key=='R') now=3;///縮放
+}
+void mouse( int button, int state, int mouseX, int mouseY )
+{
+    oldX = mouseX; oldY = mouseY;
+}
+void motion( int mouseX, int mouseY )
+{
+    if(now==1){///移動
+        x += (mouseX-oldX);
+        y += (mouseY-oldY);
+    }else if(now==2){///旋轉
+        angle += (mouseX-oldX);
+    }else if(now==3){///縮放
+        if( mouseX>oldX ) scale = scale * 1.01;
+        if( mouseX<oldX ) scale = scale * 0.99;
+    }
+    oldX = mouseX; oldY = mouseY;
+    display();
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("week06 keyboard mouse motion");
+
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+
+    glutMainLoop();
+}
+```
 
 
 
