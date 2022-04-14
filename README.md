@@ -926,13 +926,94 @@ int main(int argc, char**argv)
     glutMainLoop();
 }
 ```
+# Week08
+今天的主題是打光Lighting。
+1.下載上課範例，網址：jsyeh.org/3dcg10，下載windows.zip＆data.zip，把解壓縮後的data資料夾放在解壓縮後的windows資料夾裡。
+  然後跑Light & Material.exe 範例。
+  範例的視窗：左下角點擊可切換 material，左上角點擊可切換 3D 模型
+2.範例的程式碼的數值，可以滑鼠拖曳使打光的位置改變
+3.接下來，程式碼實作，要把打光的效果呈現出來。把freeglut下載，放在桌面上，解壓縮後，lib裡的最短的在變更短（跟之前上課的步驟是一樣的），
+打開新的GLUT專案，先不要把原先的程式碼刪掉，把程式碼先用Notepad++備份起來。先找出來，裡面有跟打光相關的程式碼，分別是打光的陣列＆打光的函式。
+4.接下來，把最簡單的10行畫茶壺的程式碼，複製貼上。把打光的陣列放在最前面宣告，把打光的函式放在glutMainLoop()之前。
+完整的程式碼如下：
+```C++
+#include <GL/glut.h>
+const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
+const GLfloat light_diffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat light_position[] = { 2.0f, 5.0f, 5.0f, 0.0f };
 
+const GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
+const GLfloat mat_diffuse[]    = { 0.8f, 0.8f, 0.8f, 1.0f };
+const GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat high_shininess[] = { 100.0f };
 
+void display()
+{
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        glutSolidTeapot( 0.3 );
+    glutSwapBuffers();
+}
 
+int main( int argc, char**argv )
+{
+    glutInit( &argc, argv );
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week08 light");
+
+    glutDisplayFunc(display);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    glEnable(GL_LIGHT0);
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  light_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
+    glutMainLoop();
+}
+```
+5.因為現在做出來的打光效果不是很清楚明白，所以調整一下打光的位置，z的值變成負數，再加上黃色的顏色，茶壺就會打光呈現得很漂亮了。
+完整的程式碼如下：
+```C
+#include <GL/glut.h>
+const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
+const GLfloat light_diffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat light_position[] = { 2.0f, 5.0f, -5.0f, 0.0f };//加個負號
+
+const GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
+const GLfloat mat_diffuse[]    = { 0.8f, 0.8f, 0.8f, 1.0f };
+const GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
+const GLfloat high_shininess[] = { 100.0f };
+
+void display()
+{
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        glColor3f( 1, 1, 0 ); //黃色的茶壼
+        glutSolidTeapot( 0.3 );
+    glutSwapBuffers();
+}
+```
+6.補充glutCreateWindow()之前, 做視窗的相關設定。
+glutCreateWindow()之後, 才能執行OpenGL指令
+最後使用 glutMainLoop()主迴圈, 讓程式持續進行，不結束
+7.介紹打光的法向量＆解釋3D模型的數值。
+8.下課前有多一個主題，下禮拜會再講一次。
+The End!
 
 
     
         
-      
-
-
+  
