@@ -927,6 +927,7 @@ int main(int argc, char**argv)
 }
 ```
 # Week08
+```C++
 今天的主題是打光Lighting。
 1.下載上課範例，網址：jsyeh.org/3dcg10，下載windows.zip＆data.zip，把解壓縮後的data資料夾放在解壓縮後的windows資料夾裡。
   然後跑Light & Material.exe 範例。
@@ -936,6 +937,7 @@ int main(int argc, char**argv)
 打開新的GLUT專案，先不要把原先的程式碼刪掉，把程式碼先用Notepad++備份起來。先找出來，裡面有跟打光相關的程式碼，分別是打光的陣列＆打光的函式。
 4.接下來，把最簡單的10行畫茶壺的程式碼，複製貼上。把打光的陣列放在最前面宣告，把打光的函式放在glutMainLoop()之前。
 完整的程式碼如下：
+```
 ```C++
 #include <GL/glut.h>
 const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -1006,11 +1008,13 @@ void display()
     glutSwapBuffers();
 }
 ```
+```C++
 6.補充glutCreateWindow()之前, 做視窗的相關設定。
 glutCreateWindow()之後, 才能執行OpenGL指令
 最後使用 glutMainLoop()主迴圈, 讓程式持續進行，不結束
 7.介紹打光的法向量＆解釋3D模型的數值。
 8.下課前有多一個主題，下禮拜會再講一次。
+```
 The End!
 
 
