@@ -1017,7 +1017,60 @@ glutCreateWindow()之後, 才能執行OpenGL指令
 ```
 The End!
 
+# Week09
+```
+今天的主題是貼圖。
+首先要先跑課本範例，至網址https://jsyeh.org/3dcg10/，下載windows.zip&data.zip，把解壓縮後的data資料夾放進解壓縮後的window資料夾，然後跑window資料夾裡的Texture.exe。
+接下來開始今天的實作:
+第一步驟:要先下載貼圖需要的opencv
+去moodle上下載opencv(一定要去moodle上下載，雖然版本舊，但檔案小又好用)
+#*注意安裝的時候，有一步PATH要設定，要點選第二個選項(Add PATH...)&預設安裝位置一定要在C槽裡
+第二步驟:opencv安裝完後，要重啟CodeBlocks
+第三步驟:在要開始實作之前，還有最後一個步驟，要設定CodeBlocks
+1.打開新的File-New-EmptyFile，然後檔名存為week09_opencv.cpp
+2.Setting-Compiler-Search directories-Compiler-Add C:\OpenCV2.1\include
 
-    
+3.                 Search directories-Linker-Add C:\OpenCV2.1\lib
+
+4.Setting-Compiler Setting-Linker setting 輸入:cv210 Add & cxcore210 Add & highgui210 Add
+第四步驟:開始寫程式(讀入圖片並秀出圖片視窗，確認opencv有安裝完成):
+#include <opencv/highgui.h>
+
+int main()
+
+{
+
+    IplImage * img=cvLoadImage("week09.jpg");
+
+    cvShowImage("week09",img);
+
+    cvWaitKey(0);
+
+}
+第五步驟:開始寫更好的程式:
+1.打開新的GLUT專案，一樣下載freeglut資料夾(步驟都跟之前一模模一樣樣)，然後把專案放在桌面的freeglut資料夾裡。把原先的程式碼刪除，然後去GitHub倉庫裡偷最簡單秀出茶壺的程式，複製貼上進專案裡。
+2.程式可以秀出茶壺後，接下來我們要寫出可以跑出茶壺&圖片的程式(雖然，茶壺要等圖片刪除視窗後，才會秀得出來)，我們把簡單的茶壺程式碼加上myTexture()，讀入並印出，並在main()裡加入myTexture();。
+
+第六步驟:最後我們寫了一個程式，可以把圖貼在茶壺上，當作是一種材質。
+首先貼上老師給的函式，然後打入在main()裡的myTexture()裡的檔案名稱。並會顯示出結果，複製的程式碼內容如下:
+#include <opencv/highgui.h> ///使用 OpenCV 2.1 比較簡單, 只要用 High GUI 即可
+#include <opencv/cv.h>
+#include <GL/glut.h>
+int myTexture(char * filename)
+{
+    IplImage * img = cvLoadImage(filename); ///OpenCV讀圖
+    cvCvtColor(img,img, CV_BGR2RGB); ///OpenCV轉色彩 (需要cv.h)
+    glEnable(GL_TEXTURE_2D); ///1. 開啟貼圖功能
+    GLuint id; ///準備一個 unsigned int 整數, 叫 貼圖ID
+    glGenTextures(1, &id); /// 產生Generate 貼圖ID
+    glBindTexture(GL_TEXTURE_2D, id); ///綁定bind 貼圖ID
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); /// 貼圖參數, 超過包裝的範圖T, 就重覆貼圖
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); /// 貼圖參數, 超過包裝的範圖S, 就重覆貼圖
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); /// 貼圖參數, 放大時的內插, 用最近點
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); /// 貼圖參數, 縮小時的內插, 用最近點
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+	return id;
+}  
+```
         
   
