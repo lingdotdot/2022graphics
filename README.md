@@ -1021,7 +1021,6 @@ The End!
 ```
 今日主題為貼圖。
 今天上課有先進行期中考試。
-```C++
 glPushMatrix();//備份矩陣
     glTranslatef(x,y,z);//移動
     glRotatef(angle,x,y,z);//轉動
@@ -1033,7 +1032,7 @@ glPushMatrix();//備份矩陣
         glVertex2f(x,y);//頂點
     glEnd();//結束畫
 glPopMatrix();//還原矩陣
-```
+
 首先，要先跑課本範例，至網址https://jsyeh.org/3dcg10/，下載windows.zip&data.zip，把解壓縮後的data資料夾放進解壓縮後的window資料夾，然後跑window資料夾裡的Texture.exe。
 
 接下來開始今天的實作:
@@ -1064,7 +1063,7 @@ int main()
 }
 第五步驟:開始寫更強的程式:
 1.打開新的GLUT專案，一樣下載freeglut資料夾(步驟都跟之前一模模一樣樣)，然後把專案放在桌面的freeglut資料夾裡。把原先的程式碼刪除，然後去GitHub倉庫裡偷最簡單秀出茶壺的程式，複製貼上進專案裡。
-2.程式可以秀出茶壺後，接下來，我們要把OpenCV&OpenGL的程式碼結合。寫出可以跑出茶壺&圖片的程式(雖然，茶壺要等圖片刪除視窗後，才會秀得出來)，我們把簡單的茶壺程式碼加上myTexture()，讀入並印出，並在main()裡加入myTexture();。把earth.jpg地球地圖放在freeglut的bin目錄裡。
+2.程式可以秀出茶壺後，接下來，我們要把OpenCV&OpenGL的程式碼結合。寫出可以跑出茶壺&圖片的程式(雖然，茶壺要等圖片刪除視窗後，才會秀得出來)，我們把簡單的茶壺程式碼加上myTexture()，讀入並印出，並在main()裡加入myTexture();。把earth.jpg地球地圖放在freeglut的bin目錄裡，才能正確的秀出圖片。
 
 第六步驟:最後我們寫了一個程式，可以把圖貼在茶壺上，當作是一種材質的效果。
 首先貼上老師給的函式，然後在main()裡的myTexture()裡輸入檔案名稱。並會顯示出結果，複製的程式碼內容如下:
