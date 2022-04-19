@@ -1019,21 +1019,36 @@ The End!
 
 # Week09
 ```
-今天的主題是貼圖。
-首先要先跑課本範例，至網址https://jsyeh.org/3dcg10/，下載windows.zip&data.zip，把解壓縮後的data資料夾放進解壓縮後的window資料夾，然後跑window資料夾裡的Texture.exe。
+今日主題為貼圖。
+今天上課有先進行期中考試。
+```C++
+glPushMatrix();//備份矩陣
+    glTranslatef(x,y,z);//移動
+    glRotatef(angle,x,y,z);//轉動
+    glScalef(x,y,z);//縮放
+    glBegin(GL_POLYGON);//開始畫
+        glColor3f(r,g,b);//色彩
+        glTexCoord2f(tx,ty);//貼圖座標
+        glNormal3f(nx,ny,nz);//打光的法向量
+        glVertex2f(x,y);//頂點
+    glEnd();//結束畫
+glPopMatrix();//還原矩陣
+```
+首先，要先跑課本範例，至網址https://jsyeh.org/3dcg10/，下載windows.zip&data.zip，把解壓縮後的data資料夾放進解壓縮後的window資料夾，然後跑window資料夾裡的Texture.exe。
+
 接下來開始今天的實作:
-第一步驟:要先下載貼圖需要的opencv
-去moodle上下載opencv(一定要去moodle上下載，雖然版本舊，但檔案小又好用)
-#*注意安裝的時候，有一步PATH要設定，要點選第二個選項(Add PATH...)&預設安裝位置一定要在C槽裡
-第二步驟:opencv安裝完後，要重啟CodeBlocks
+第一步驟:先下載貼圖需要的OpenCV
+去moodle上下載OpenCV 2.1.0(一定要去moodle上下載，雖然版本舊，但檔案小又好用)
+#*注意安裝的時候，有一步PATH要設定，要點選第二個選項(Add PATH...)&預設安裝位置一定要在C槽裡 (C:\OpenCV2.1)
+第二步驟:OpenCV安裝完後，要重啟CodeBlocks
 第三步驟:在要開始實作之前，還有最後一個步驟，要設定CodeBlocks
 1.打開新的File-New-EmptyFile，然後檔名存為week09_opencv.cpp
 2.Setting-Compiler-Search directories-Compiler-Add C:\OpenCV2.1\include
 
-3.                 Search directories-Linker-Add C:\OpenCV2.1\lib
+3.                -Search directories-Linker-Add C:\OpenCV2.1\lib
 
-4.Setting-Compiler Setting-Linker setting 輸入:cv210 Add & cxcore210 Add & highgui210 Add
-第四步驟:開始寫程式(讀入圖片並秀出圖片視窗，確認opencv有安裝完成):
+4.Setting-Compiler Setting-Linker setting 輸入:cv210 按Add & cxcore210 按Add & highgui210 按Add
+第四步驟:開始寫程式(讀入圖片並秀出圖片視窗，確認OpenCV有安裝完成):
 #include <opencv/highgui.h>
 
 int main()
@@ -1047,12 +1062,12 @@ int main()
     cvWaitKey(0);
 
 }
-第五步驟:開始寫更好的程式:
+第五步驟:開始寫更強的程式:
 1.打開新的GLUT專案，一樣下載freeglut資料夾(步驟都跟之前一模模一樣樣)，然後把專案放在桌面的freeglut資料夾裡。把原先的程式碼刪除，然後去GitHub倉庫裡偷最簡單秀出茶壺的程式，複製貼上進專案裡。
-2.程式可以秀出茶壺後，接下來我們要寫出可以跑出茶壺&圖片的程式(雖然，茶壺要等圖片刪除視窗後，才會秀得出來)，我們把簡單的茶壺程式碼加上myTexture()，讀入並印出，並在main()裡加入myTexture();。
+2.程式可以秀出茶壺後，接下來，我們要把OpenCV&OpenGL的程式碼結合。寫出可以跑出茶壺&圖片的程式(雖然，茶壺要等圖片刪除視窗後，才會秀得出來)，我們把簡單的茶壺程式碼加上myTexture()，讀入並印出，並在main()裡加入myTexture();。把earth.jpg地球地圖放在freeglut的bin目錄裡。
 
-第六步驟:最後我們寫了一個程式，可以把圖貼在茶壺上，當作是一種材質。
-首先貼上老師給的函式，然後打入在main()裡的myTexture()裡的檔案名稱。並會顯示出結果，複製的程式碼內容如下:
+第六步驟:最後我們寫了一個程式，可以把圖貼在茶壺上，當作是一種材質的效果。
+首先貼上老師給的函式，然後在main()裡的myTexture()裡輸入檔案名稱。並會顯示出結果，複製的程式碼內容如下:
 #include <opencv/highgui.h> ///使用 OpenCV 2.1 比較簡單, 只要用 High GUI 即可
 #include <opencv/cv.h>
 #include <GL/glut.h>
