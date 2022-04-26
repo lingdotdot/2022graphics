@@ -1086,5 +1086,188 @@ int myTexture(char * filename)
 	return id;
 }  
 ```
-        
-  
+
+# Week10
+第一件事:檢討期中考成績&疫情相關宣導
+主題一:上週貼圖+貼到四邊形=背景
+先完成設定:
+-安裝freeglut
+-安裝OpenCV 2.1.0 vs2008
+-重開CodeBlocks
+-打開新的GLUT專案
+-把上週的myTexture.txt的myTexture()複製貼上
+-完成OpenCV設定:
+	-Setting-Compiler, search directories, Compiler+ C:\OpenCV2.1\include
+	-Setting-Compiler, search directories, Linker+ C:\OpenCV2.1\lib
+	-Setting-Compiler, Linker settings+ cv210 cxcore210 highgui210
+```C
+#include <opencv/highgui.h> ///使用 OpenCV 2.1 比較簡單, 只要用 High GUI 即可
+#include <opencv/cv.h>
+#include <GL/glut.h>
+int myTexture(char * filename)
+{
+    IplImage * img = cvLoadImage(filename); ///OpenCV讀圖
+    cvCvtColor(img,img, CV_BGR2RGB); ///OpenCV轉色彩 (需要cv.h)
+    glEnable(GL_TEXTURE_2D); ///1. 開啟貼圖功能
+    GLuint id; ///準備一個 unsigned int 整數, 叫 貼圖ID
+    glGenTextures(1, &id); /// 產生Generate 貼圖ID
+    glBindTexture(GL_TEXTURE_2D, id); ///綁定bind 貼圖ID
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); /// 貼圖參數, 超過包裝的範圖T, 就重覆貼圖
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); /// 貼圖參數, 超過包裝的範圖S, 就重覆貼圖
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); /// 貼圖參數, 放大時的內插, 用最近點
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); /// 貼圖參數, 縮小時的內插, 用最近點
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+    return id;
+}
+```
+接下來，把剛剛複製貼上的myTexture()再加上10行程式。便能完成上週的進度。
+-記得，圖片要放在freeglut/bin裡
+-在main()裡面，把myTexture("圖檔名稱"); 
+```C
+int main(int argc,char**argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week10 texture background");
+
+    glutDisplayFunc(display);
+    myTexture("earth.jpg");
+
+    glutMainLoop();
+}
+```
+正式開始貼圖到四邊形。
+-glBegin(GL_POLYGON)
+-glTexCoord(tx,ty);glVertex2f(x,y);寫四次，代表四個四邊形的頂點
+-glEnd();
+```C
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    ///glutSolidTeapot(0.3);
+    glBegin(GL_POLYGON);
+    ///圖片的0,0在左上角
+        glTexCoord2f( 0, 1 ); glVertex2f( -1, -1 );
+        glTexCoord2f( 1, 1 ); glVertex2f( +1, -1 );
+        glTexCoord2f( 1, 0 ); glVertex2f( +1, +1 );
+        glTexCoord2f( 0, 0 ); glVertex2f( -1, +1 );
+    glEnd();
+    glutSwapBuffers();
+}
+```
+主題二:上週貼圖+貼到圓球=會轉的地球
+利用OpenGL User函式來做到
+-打開新的GLUT專案
+-宣告指標GLUquadric * sphere=NULL;
+-在 main()裡, 將指標設定好 sphere = gluNewQuadric();
+-在 display()裡, 加入 gluQuadricTexture(sphere, 1);
+-在 display()裡, 再加入 gluSpher(sphere, 1, 30, 30);
+gluSphere(sphere,半徑,柳丁切經,層層切緯)
+
+我們要把地球轉正。利用glPushMatrix()&glPopMatrix()裡面多一行glRotatef(角度,1,0,0)。
+-glutMainLoop()之前，要利用glEnable(GL_DEPTH_TEST)函式去開啟3D深度測試的功能(才不會破圖)。
+```C
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();//step02-2
+        glRotatef(90, 1,0,0);//step02-2
+        gluQuadricTexture(sphere, 1);
+        gluSphere(sphere, 1, 30, 30);///glutSolidTeapot(0.3);
+    glPopMatrix();//step02-2
+    glutSwapBuffers();
+}
+int main(int argc,char**argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week10 texture background");
+
+    glutDisplayFunc(display);
+    myTexture("earth.jpg");
+    sphere = gluNewQuadric();
+    glEnable(GL_DEPTH_TEST);//step02-2
+
+    glutMainLoop();
+}
+```
+主題三:上週貼圖+貼到模型=鋼彈模型
+讓地球可以轉動起來。
+-在display();的最後一行angle++或angle+=0.1(轉動較慢)/每次要轉動多少
+-glRotate(angle,0,-1,0)/地球會對著-y軸轉動
+-main()裡面，加上glutIdleFunc(display)
+```C
+#include <opencv/highgui.h> ///使用 OpenCV 2.1 比較簡單, 只要用 High GUI 即可
+#include <opencv/cv.h>
+#include <GL/glut.h>
+GLUquadric * sphere = NULL;///一個指到二次曲面的指標
+int myTexture(char * filename)
+{
+    IplImage * img = cvLoadImage(filename); ///OpenCV讀圖
+    cvCvtColor(img,img, CV_BGR2RGB); ///OpenCV轉色彩 (需要cv.h)
+    glEnable(GL_TEXTURE_2D); ///1. 開啟貼圖功能
+    GLuint id; ///準備一個 unsigned int 整數, 叫 貼圖ID
+    glGenTextures(1, &id); /// 產生Generate 貼圖ID
+    glBindTexture(GL_TEXTURE_2D, id); ///綁定bind 貼圖ID
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); /// 貼圖參數, 超過包裝的範圖T, 就重覆貼圖
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); /// 貼圖參數, 超過包裝的範圖S, 就重覆貼圖
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); /// 貼圖參數, 放大時的內插, 用最近點
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); /// 貼圖參數, 縮小時的內插, 用最近點
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+    return id;
+}
+float angle=0;
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+        glRotatef(angle, 0,-1,0);
+        glRotatef(90, 1,0,0);
+        gluQuadricTexture(sphere, 1);
+        gluSphere(sphere, 1, 30, 30);///glutSolidTeapot(0.3);
+    glPopMatrix();
+    glutSwapBuffers();
+    angle++;
+}
+int main(int argc,char**argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week10 texture background");
+
+    glutIdleFunc(display);
+    glutDisplayFunc(display);
+    myTexture("earth.jpg");
+    sphere = gluNewQuadric();
+    glEnable(GL_DEPTH_TEST);
+
+    glutMainLoop();
+}
+```
+上課的最後:我們要學會怎麼把模型讀進來。結合會旋轉的地球的程式碼，再用week08教過的程式碼，貼圖即可。
+-建立新的GLUT專案
+-模型myGundam.zip的data資料夾放進桌面freeglut/bin裡
+-glm.h & glm.c放進專案的資料夾裡(week10_texture_model):在jsyeh.org/3dcg10 的 source.zip
+-把glm.c改成glm.cpp
+-glm.cpp加道專案裡(CodeBlocks)
+-把week08程式複製貼上
+-把myTexture("earth.jpg")改成myTexture("data/Diffuse.jpg")
+
+```C
+//前面 include glm.h, 宣告模型的指標
+#include "glm.h"
+GLMmodel * pmodel = NULL;
+//中間讀入模型
+    glPushMatrix();
+        glRotatef(angle, 0,1,0);
+        if( pmodel == NULL ){
+            pmodel = glmReadOBJ("data/Gundam.obj");
+            glmUnitize( pmodel );
+            glmFacetNormals( pmodel );
+            glmVertexNormals( pmodel, 90 );
+        }
+        glmDraw( pmodel, GLM_MATERIAL | GLM_TEXTURE);
+    glPopMatrix();
+//記得在 main() 裡面將貼圖讀進來
+    myTexture("data/Diffuse.jpg");
+```
