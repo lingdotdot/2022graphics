@@ -1122,7 +1122,7 @@ int myTexture(char * filename)
 ```
 接下來，把剛剛複製貼上的myTexture()再加上10行程式。便能完成上週的進度。
 -記得，圖片要放在freeglut/bin裡
--在main()裡面，把myTexture("圖檔名稱"); 
+-在main()裡面，把myTexture("圖檔名稱"); 放好
 ```C
 int main(int argc,char**argv)
 {
@@ -1138,7 +1138,7 @@ int main(int argc,char**argv)
 ```
 正式開始貼圖到四邊形。
 -glBegin(GL_POLYGON)
--glTexCoord(tx,ty);glVertex2f(x,y);寫四次，代表四個四邊形的頂點
+-glTexCoord2f(tx,ty);glVertex2f(x,y);寫四次，代表四邊形的四個頂點
 -glEnd();
 ```C
 void display()
@@ -1164,7 +1164,7 @@ void display()
 -在 display()裡, 再加入 gluSpher(sphere, 1, 30, 30);
 gluSphere(sphere,半徑,柳丁切經,層層切緯)
 
-我們要把地球轉正。利用glPushMatrix()&glPopMatrix()裡面多一行glRotatef(角度,1,0,0)。
+我們要把地球轉正。利用glPushMatrix()&glPopMatrix()裡面多一行glRotatef(角度,1,0,0)即可。
 -glutMainLoop()之前，要利用glEnable(GL_DEPTH_TEST)函式去開啟3D深度測試的功能(才不會破圖)。
 ```C
 void display()
@@ -1194,7 +1194,7 @@ int main(int argc,char**argv)
 主題三:上週貼圖+貼到模型=鋼彈模型
 讓地球可以轉動起來。
 -在display();的最後一行angle++或angle+=0.1(轉動較慢)/每次要轉動多少
--glRotate(angle,0,-1,0)/地球會對著-y軸轉動
+-glRotatef(angle,0,-1,0)/地球會對著-Y軸轉動
 -main()裡面，加上glutIdleFunc(display)
 ```C
 #include <opencv/highgui.h> ///使用 OpenCV 2.1 比較簡單, 只要用 High GUI 即可
@@ -1244,12 +1244,12 @@ int main(int argc,char**argv)
     glutMainLoop();
 }
 ```
-上課的最後:我們要學會怎麼把模型讀進來。結合會旋轉的地球的程式碼，再用week08教過的程式碼，貼圖即可。
+今日上課的最後:我們要學會怎麼把模型讀進來。結合會旋轉的地球的程式碼，再用week08教過的程式碼，再做貼圖即可。
 -建立新的GLUT專案
 -模型myGundam.zip的data資料夾放進桌面freeglut/bin裡
 -glm.h & glm.c放進專案的資料夾裡(week10_texture_model):在jsyeh.org/3dcg10 的 source.zip
 -把glm.c改成glm.cpp
--glm.cpp加道專案裡(CodeBlocks)
+-glm.cpp加到專案裡(CodeBlocks操作)
 -把week08程式複製貼上
 -把myTexture("earth.jpg")改成myTexture("data/Diffuse.jpg")
 
