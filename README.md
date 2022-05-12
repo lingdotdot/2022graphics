@@ -1418,7 +1418,8 @@ int main(int argc, char**argv)
 -git push
 
 # Week12
-step01-1:看課本Transformation.exe:-jsyeh.org/3dcg10網址下載windows.zip&data.zip，-把解壓縮後的data資料夾放進解壓縮後的windows資料夾裡，執行windows資料夾裡的Transformation.exe，去觀察模型轉動的變化。
+# step01-1:
+看課本Transformation.exe:jsyeh.org/3dcg10網址下載windows.zip & data.zip，把解壓縮後的data資料夾放進解壓縮後的windows資料夾裡，執行windows資料夾裡的Transformation.exe，去觀察模型轉動的變化。
 例一:看起來像是放在右邊像陀螺一樣轉動。
 ```C
 glTranslatef( 0.8, 0.0, 0.0);//在右邊
@@ -1429,7 +1430,8 @@ glRotatef( angle, 0, 1, 0);//轉動
 glRotatef( angle, 0, 1, 0);
 glTranslatef( 0.8, 0.0, ,0.0);
 ```
-step01-2:老師利用在程式碼上畫框框，去詳細講解程式碼的原理。
+# step01-2:
+老師利用在程式碼上畫框框，去詳細講解程式碼的原理。
 例一:
 glBegin();藍色的車子
 glScalef();大小正常的藍色的車子
@@ -1440,13 +1442,19 @@ glBegin();藍色的車子
 glScalef();大小正常的藍色的車子
 glTranslate();把大小正常的藍色的車子移到右邊去
 glRotatef();整個轉動的移到右邊去的大小正常的藍色的車子
-step01-3:https://120.125.80.50/GL : 點選OpenGL T-R-T函式:對待定軸轉動練習 連結
--滑鼠點ToDraw，在左介面滑鼠拖拉去畫出一個圖形
+
+# step01-3:
+https://120.125.80.50/GL : 點選OpenGL T-R-T函式:對待定軸轉動練習 連結
+-滑鼠點ToDraw，在左介面，滑鼠拖拉去畫出一個圖形
 -會產生新的myDrawObject(0);，可以拖移這行程式碼去觀察變化
 -滑鼠點angle，按空白鍵後，圖形會轉動起來
 -可以再增加多一個圖形，可以滑鼠點glTranslatef()程式的方框後,可改變東西的位置
-step02-1:繼續更詳細的利用網頁去解釋TRT原理
-step02-2:程式實作:freeglut裝好，打開新GLUT專案取名為week12_TRT，用簡單的茶壺程式碼去配合T-R-T函式。
+
+# step02-1:
+繼續更詳細的利用網頁去解釋T-R-T原理
+
+# step02-2:
+程式實作:freeglut裝好，打開新GLUT專案取名為week12_TRT，用簡單的茶壺程式碼去配合T-R-T函式。
 ```C++
 #include <GL/glut.h>
 float angle=0;
@@ -1466,7 +1474,8 @@ void display()
     angle+=0.1;
 }
 ```
-step03-1:把剛剛的程式改編，做出像作業很像的手臂關節轉動，打開新的GLUT專案取名為week12_TRT_TRT
+# step03-1:
+把剛剛的程式改編，做出像作業很像的手臂關節轉動，打開新的GLUT專案取名為week12_TRT_TRT
 ```C
 #include <GL/glut.h>
 float angle=0;
