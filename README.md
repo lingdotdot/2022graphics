@@ -1505,7 +1505,8 @@ void display()
 The End
 
 # Week13
-# step01-1 : 我們用glRectf(x1,y1,x2,y2);來畫出簡單的四邊形，來做TRT
+# step01-1
+我們用glRectf(x1,y1,x2,y2);來畫出簡單的四邊形(身體)，來做TRT。
 -打開新的GLUT專案，取名為week13_rect_TRT
 -貼上最基本的10行程式碼，再加上glRectf()
 ```C
@@ -1527,7 +1528,8 @@ int main(int argc, char**argv)
     glutMainLoop();
 }
 ```
-# step01-2 把手臂畫出來
+# step01-2 
+把上手臂畫出來。
 ```C
 void display()
 {
@@ -1546,7 +1548,7 @@ void display()
 }
 ```
 # step01-3 : 
-先把TRT最下面的glTranslatef()裡的數值做調整，使得手臂的旋轉中心移到中心點後，float angle=45去做45度的旋轉。
+先把TRT最下面的glTranslatef()裡的數值做調整，使得上手臂的旋轉中心移到中心點後，float angle=45去做45度的旋轉。
 ```C
 float angle=45;
 void display()
@@ -1566,7 +1568,7 @@ void display()
 }
 ```
 # step02-1
-利用mouse來揮動手臂
+利用mouse來揮動上手臂。
 ```C
 #include <GL/glut.h>
 float angle=45, oldX=0;
@@ -1655,7 +1657,7 @@ void display()
 }
 ```
 # step03-1
-畫出左半邊的手臂
+畫出左半邊的上手臂&下手臂
 -複製，並調整相對位置的xy值
 ```C
 void display()
@@ -1699,9 +1701,9 @@ void display()
 ```
 # step03-2
 做出可以利用keyboard來指定要做轉動的關節。
--float angle=0; 改成 float angle[20];//用陣列，現在有20個關節
+-float angle=0; 改成 float angle[20];//利用陣列，現在有20個關節
 -利用keyboard()，做if判斷，並設定angleID，在透過motion()去做關節的指定
--main()裡面加上glutKeyboard(keyboard)
+-main()裡面加上glutKeyboardFunc(keyboard);
 ```C
 #include <GL/glut.h>
 float angle[20], oldX=0;
