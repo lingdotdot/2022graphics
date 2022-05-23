@@ -1774,3 +1774,43 @@ int main(int argc, char**argv)
     glutMainLoop();
 }
 ```
+
+# Week14
+# Step01-1: 練習寫檔
+-FILE * fin=fopen("file.txt","w+");
+-printf()改裝成fprintf()
+-關閉檔案 `fclose(fin)`
+# Step01-2: 練習開檔+寫檔+關檔&練習開檔+讀檔+關檔
+-程式碼做開檔->寫檔->關檔的動作
+-開檔
+-讀入字串並列印字串
+    -fscanf(fin,"%s %d",line,&a);//讀入字串
+    -printf()//印出字串
+-關檔
+# Step01-3A: 把上週寫的week13_rect_many_TRT拿來讀
+-打開新的GLUT專案，專案名稱取名為week14_TRT_angle_write
+-貼上week13_rect_many_TRT程式
+-要開檔&寫檔，最後做關檔的動作。
+# Step01-3B: 加程式碼，可以看到關節轉動的數值，並找到程式碼產生的file.txt檔
+-在myWrite()，fprintf()前加上:printf(   "%.2f",angle[i]);//顯示關節旋轉角度
+-在myWrite()的for迴圈外面加上
+           printf("\n");
+           fprintf(fout,"\n");
+   //印出的數字看起來比較整齊
+-view/Log，找到專案執行位置:\Users\雨涵\Desktop\freeglut\bin// 搜尋電腦->找出file檔
+# Step02-1: 模仿動作的效果
+-打開新的GLUT專案，檔案名稱取名為week14_TRT_angle_write_and_read
+-程式最前面加上新的空指標:`FILE * fin = NULL;`
+-寫一個void myRead()
+-keyboard()函式中，加上一個新的按鍵，按下可以呼叫myRead()並更新畫面
+# Step02-2: 修改專案的工作目錄
+-目前的工作目錄:\Users\雨涵\Desktop\freeglut\bin
+-要把專案的工作目錄改放在自己想要的位置(專案的資料夾)
+# Step03-1: 學習glutTimer()
+-設定timer:glutTimerFunc(時間,timer,參數t)
+-宣告void timer(int t)
+# Step03-2: 鬧鐘每響一次，就發出聲音一次
+-下載do.wav(音檔)//隨便的音檔都可
+-宣告:#include <mmsystem.h>
+-void timer(int t)裡加上PlaySound("do.wav",NULL,SND_ASYNC);
+THE END
