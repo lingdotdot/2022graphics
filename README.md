@@ -1780,6 +1780,18 @@ int main(int argc, char**argv)
 -FILE * fin=fopen("file.txt","w+");
 -printf()改裝成fprintf()
 -關閉檔案 `fclose(fin)`
+```C++
+#include <stdio.h>
+int main()
+{
+    FILE * fout = fopen("file.txt", "w+");
+
+     printf("Hello World\n");
+    fprintf(fout, "Hello World\n");
+
+    fclose(fout);
+}
+```
 # Step01-2: 練習開檔+寫檔+關檔&練習開檔+讀檔+關檔
 -程式碼做開檔->寫檔->關檔的動作
 -開檔
@@ -1787,10 +1799,54 @@ int main(int argc, char**argv)
     -fscanf(fin,"%s %d",line,&a);//讀入字串
     -printf()//印出字串
 -關檔
+```C++
+#include <stdio.h>
+int main()
+{
+    FILE * fout = fopen("file2.txt", "w+");
+    fprintf(fout, "angle1 %d\n", 999);
+    fclose(fout);
+
+    char line[200];
+    int a;
+    FILE * fin = fopen("file2.txt", "r");
+    fscanf(fin, "%s %d", line, &a);
+    printf("讀到了字串:%s 及整數%d\n", line, a);
+    fclose(fin);
+}
+```
 # Step01-3A: 把上週寫的week13_rect_many_TRT拿來讀
 -打開新的GLUT專案，專案名稱取名為week14_TRT_angle_write
 -貼上week13_rect_many_TRT程式
 -要開檔&寫檔，最後做關檔的動作。
+```C
+#include <GL/glut.h>
+#include <stdio.h> ///為了 printf, fprintf, fopen, fclose ..
+float angle[20], oldX=0;
+int angleID=0;///0:第0個關節, 1:第1個關節, 2:第2個關節
+FILE * fout = NULL;
+void myWrite(){
+    if(fout==NULL) fout = fopen("file.txt", "w+");
+    for(int i=0; i<20; i++){
+        fprintf(fout, "%.2f ", angle[i] );
+    }
+}
+void keyboard( unsigned char key, int x, int y){
+    if( key=='0' ) angleID=0;///預設是這一個
+    if( key=='1' ) angleID=1;
+    if( key=='2' ) angleID=2;
+    if( key=='3' ) angleID=3;
+}///用keyboard的按鍵,來決定等一下 motion()裡要改的 angle[i] 是哪一個
+void mouse(int button, int state, int x, int y){///mouse按下去
+    oldX = x;
+}
+void motion(int x, int y){
+    angle[angleID] += (x-oldX);
+    myWrite();
+    oldX = x;
+    glutPostRedisplay();
+}
+```
 # Step01-3B: 加程式碼，可以看到關節轉動的數值，並找到程式碼產生的file.txt檔
 -在myWrite()，fprintf()前加上:printf(   "%.2f",angle[i]);//顯示關節旋轉角度
 -在myWrite()的for迴圈外面加上
@@ -1803,14 +1859,78 @@ int main(int argc, char**argv)
 -程式最前面加上新的空指標:`FILE * fin = NULL;`
 -寫一個void myRead()
 -keyboard()函式中，加上一個新的按鍵，按下可以呼叫myRead()並更新畫面
+```C
+FILE * fout = NULL, * fin = NULL;
+void myWrite(){
+    if(fout==NULL) fout = fopen("file.txt", "w+");
+    for(int i=0; i<20; i++){
+         printf(      "%.2f ", angle[i] );
+        fprintf(fout, "%.2f ", angle[i] );
+    }
+    printf("\n");
+    fprintf(fout, "\n");///少了fclose,因為不想要才印一行,就結束。想寫多行一些
+}
+void myRead(){
+    if(fout!=NULL) { fclose(fout); fout=NULL; }///還在讀的檔案要關掉
+    if(fin==NULL) fin = fopen("file.txt", "r");
+    for(int i=0; i<20; i++){
+        fscanf(fin, "%f", &angle[i] );
+    }
+    glutPostRedisplay();///重畫畫面!!
+}
+void keyboard( unsigned char key, int x, int y){
+    if( key=='r' ){
+        myRead();
+    }
+    if( key=='0' ) angleID=0;///預設是這一個
+    if( key=='1' ) angleID=1;
+    if( key=='2' ) angleID=2;
+    if( key=='3' ) angleID=3;
+}
+```
 # Step02-2: 修改專案的工作目錄
 -目前的工作目錄:\Users\雨涵\Desktop\freeglut\bin
 -要把專案的工作目錄改放在自己想要的位置(專案的資料夾)
 # Step03-1: 學習glutTimer()
 -設定timer:glutTimerFunc(時間,timer,參數t)
 -宣告void timer(int t)
+```
+#include <GL/glut.h>
+#include <stdio.h>
+void timer(int t){///t的單位是ms
+    ///1000代表1秒, 1500代表1.5秒
+    printf("鬧鐘%d, 我起床了\n", t);///起床做事情
+
+    printf("設定下一個鬧鐘\n");
+    glutTimerFunc( 2000, timer, t+1);///2秒後
+    //printf("設好鬧鐘,再回去睡\n");
+}
+void display()
+{
+
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE|GLUT_DEPTH);
+    glutCreateWindow("week14 timer");
+
+    glutTimerFunc(3000, timer, 0);///3秒後,叫timer()
+    glutDisplayFunc(display);
+    glutMainLoop();
+}
+```
 # Step03-2: 鬧鐘每響一次，就發出聲音一次
 -下載do.wav(音檔)//隨便的音檔都可
 -宣告:#include <mmsystem.h>
 -void timer(int t)裡加上PlaySound("do.wav",NULL,SND_ASYNC);
+```C++
+void timer(int t){///t的單位是ms
+    ///1000代表1秒, 1500代表1.5秒
+    printf("鬧鐘%d, 我起床了\n", t);///起床做事情
+    PlaySound("do.wav", NULL, SND_ASYNC);
+    printf("設定下一個鬧鐘\n");
+    glutTimerFunc( 2000, timer, t+1);///2秒後
+}
+```
 THE END
