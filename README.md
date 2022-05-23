@@ -1894,7 +1894,7 @@ void keyboard( unsigned char key, int x, int y){
 # Step03-1: 學習glutTimer()
 -設定timer:glutTimerFunc(時間,timer,參數t)
 -宣告void timer(int t)
-```
+```C++
 #include <GL/glut.h>
 #include <stdio.h>
 void timer(int t){///t的單位是ms
