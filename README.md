@@ -1934,3 +1934,189 @@ void timer(int t){///t的單位是ms
 }
 ```
 THE END
+
+# Week15
+# step01-1 PlaySound()
+-Setting-Compiler Setting,Linker Setting加上winmm
+```C
+#include <windows.h>///另一種寫法,結果一樣
+int main()
+{ 
+    PlaySound("07042111.wav", NULL, SND_SYNC );
+}
+```
+# step01-2 比較SND_ASYNC和SND_SYNC
+SND_ASYNC:不用等待，不同步
+SND_SYNC:要等待同步
+實作程式:音檔會持續播放，直到輸入數值，才停住
+```C
+#include <windows.h>
+#include <stdio.h>
+int main()
+{
+    printf("現在在PLaySound()前\n");
+    PlaySound("07042111.wav",NULL,SND_ASYNC);
+    printf("現在在PlaySound()後\n");
+    int N;
+    scanf("%d",&N);
+}
+```
+# step01-3 播放mp3檔
+-MP3<WAV
+-把CMP3_MCI.h檔和mp3檔放在工作目錄裡
+```C
+#include "CMP3_MCI.h"
+#include <stdio.h>
+CMP3_MCI mp3;
+int main()
+{
+    mp3.Load("07042111.mp3");
+    mp3.Play();
+    printf("現在正在播放羊的聲音\n");
+    int N;
+    scanf("%d",&N);
+}
+```
+# step02-1  接續上周的程式 week14_angles_TRT_write_and_read
+-打開新的GLUT專案，取名為week15_angles_TRT_again
+-從github複製上周的完整程式week14_angles_TRT_write_and_read
+-motion裡不需要一直存檔，myWrite()註解掉
+-所以，我們加上鍵盤偵測，如果按下特定的鍵，就會做myWrite()的動作
+myWrite()之前有寫錯，修改完的myWrite()
+```C
+void myWrite()
+{
+    if(fout==NULL) fout=fopen("file.txt","w+");
+    for(int i=0;i<20;i++)
+    {
+        printf(   "%.2f",angle[i]);
+        fprintf(fout,"%.2f  ",angle[i]);//2f後面要有一個空格
+    }
+    printf("\n");
+    fprintf(fout,"\n");
+}
+```
+# step02-2 模型做重複的動作
+  -去freeglut/bin裡的file.text複製貼上重複的動作，file.text就是執行的動作檔
+# step03-1 講解回家作業
+-打開新的GLUT專案，取名為week15_homework_gundam_parts
+-做放模型的全部前置動作:
+	-glm.cpp&glm.h和freeglut.dull和gundam的data資料夾放到專案的工作目錄
+	-Add Files/glm.cpp
+-working_dir要注意(如果錯了，到工作目錄的cbp檔，working_dir改成".")>>Reload，但不要再重複儲存cpp檔
+```C//白色的鋼彈
+#include <GL/glut.h>
+#include "glm.h"
+#include <stdio.h>//為了printf,fprintf,fopen,fclose
+GLMmodel * pmodel =NULL;
+float angle[20],oldX=0;
+int angleID=0;
+FILE * fout = NULL,*fin=NULL;
+void myWrite()
+{
+    if(fout==NULL) fout=fopen("file.txt","w+");
+    for(int i=0;i<20;i++)
+    {
+        printf(   "%.2f",angle[i]);
+        fprintf(fout,"%.2f ",angle[i]);
+    }
+    printf("\n");
+    fprintf(fout,"\n");
+}
+void myRead()
+{
+    if(fout!=NULL){
+        fclose(fout);fout=NULL;
+    }
+    if(fin==NULL) fin=fopen("file.txt","r");
+    for(int i=0;i<20;i++)
+    {
+        fscanf(fin,"%f",&angle[i]);
+    }
+    glutPostRedisplay();
+}
+void keyboard(unsigned char key,int x,int y)
+{
+    if(key=='r')myRead();
+    if(key=='s')myWrite();
+    if(key=='0')angleID=0;
+    if(key=='1')angleID=1;
+    if(key=='2')angleID=2;
+    if(key=='3')angleID=3;
+}
+void mouse(int button,int state,int x,int y)//mosue按下去
+{
+    oldX=x;
+}
+void motion(int x,int y)
+{
+    angle[angleID]+=(x-oldX);
+    ///myWrite();
+    oldX=x;
+    glutPostRedisplay();
+}
+void display()//今日精華
+{
+    
+}
+void displayNotParts()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if(pmodel==NULL)
+    {
+        pmodel=glmReadOBJ("data/Gundam.obj");
+        glmUnitize(pmodel);
+        glmFacetNormals(pmodel);
+        glmVertexNormals(pmodel,90);
+    }
+    glmDraw(pmodel,GLM_SMOOTH);
+    glutSwapBuffers();
+}
+void displayold()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glColor3f(1,1,1);
+    glRectf(0.3,0.5,-0.3,-0.2);//正方形當作身體
+    glPushMatrix(); //右半邊
+        glTranslatef(0.3,0.5,0);
+        glRotatef(angle[0],0,0,1);
+        glTranslatef(-0.3,-0.4,0);
+        glColor3f(1,0,0);
+        glRectf(0.3,0.5,0.8,0.3);
+        glPushMatrix();
+            glTranslatef(0.8,0.4,0);//(3)把下手臂掛在關節上
+            glRotatef(angle[1],0,0,1);//(2)旋轉
+            glTranslatef(-0.8,-0.4,0);//(1)把下手臂的旋轉中心，放正中心
+            glColor3f(0,1,0);
+            glRectf(0.8,0.5,1.1,0.3);//再畫下手臂
+        glPopMatrix();
+    glPopMatrix();
+    glPushMatrix(); //左半邊
+        glTranslatef(-0.3,0.5,0);
+        glRotatef(angle[2],0,0,1);
+        glTranslatef(+0.3,-0.4,0);
+        glColor3f(1,0,0);
+        glRectf(-0.3,0.5,-0.8,0.3);
+        glPushMatrix();
+            glTranslatef(-0.8,0.4,0);//(3)把下手臂掛在關節上
+            glRotatef(angle[3],0,0,1);//(2)旋轉
+            glTranslatef(+0.8,-0.4,0);//(1)把下手臂的旋轉中心，放正中心
+            glColor3f(0,1,0);
+            glRectf(-0.8,0.5,-1.1,0.3);//再畫下手臂
+        glPopMatrix();
+    glPopMatrix();
+    glutSwapBuffers();
+}
+
+int main(int argc,char**argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_DEPTH );
+    glutCreateWindow("week15 angles TRT again");
+    glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+    glutDisplayFunc( display );
+    glutMainLoop();
+}
+```
