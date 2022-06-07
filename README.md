@@ -2133,10 +2133,10 @@ int main(int argc,char**argv)
 
 操作流程:
 *記得file.txt要先有動作儲存著
-
 -按兩次'r'
 -再按'p'
 內插就出來了!
+
 ```C
 #include <GL/glut.h>
 
@@ -2511,9 +2511,48 @@ int main(int argc,char**argv)
 -gluLookAt()裡面的三個參數:
 	-眼睛在哪裡(從哪裡看)
 	-要看哪裡((要拍誰(向哪裡))，相機的正中間要向哪裡)
-	-相機是否旋轉(通常都設定為0,1,0)(食指向哪裡，unity的x,y,z的感覺。
+	-相機是否旋轉(通常都設定為0,1,0)(食指向哪裡，unity的x,y,z的感覺。)
 單字:
 -aspect ratio=螢幕的長寬比=寬度/高度(寬度除高度)
 
 # Step03-2 實作程式:利用滑鼠改變LookAt位置(實行簡單的運鏡效果)
 ```C
+#include <GL/glut.h>
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glutSolidTeapot(2);///大茶壼
+    glutSwapBuffers();
+}
+void motion(int x, int y)
+{
+    glMatrixMode(GL_MODELVIEW);///3D經過轉換到你最後的攝影機
+    glLoadIdentity();
+    gluLookAt( (x-150)/15.0, (y-150)/15.0, 3, ///eye
+    0, 0, 0, ///center
+    0, 1, 0);///up
+    glutPostRedisplay();
+}
+void reshape(int w, int h)
+{
+    const float ar = (float) w / (float) h;
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);///投影,把3D投射到2D畫面
+    glLoadIdentity();
+    gluPerspective(60, ar, 0.1, 100);
+    glMatrixMode(GL_MODELVIEW);///3D經過轉換到你最後的攝影機
+    glLoadIdentity() ;
+    gluLookAt( 0, 0, 3, 0, 0, 0, 0, 1, 0);
+}
+int main(int argc, char**argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("week16 camera lookat");
+    glutReshapeFunc(reshape);
+    glutDisplayFunc(display);
+    glutMotionFunc(motion);
+    glutMainLoop();
+}
+```
+The End
