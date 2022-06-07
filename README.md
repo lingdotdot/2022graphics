@@ -2380,7 +2380,7 @@ int main(int argc,char**argv)
 -程式執行，按下p，就會開始播放動作
 -file.txt全部讀完後，動作就會卡在那邊(正常的!）
 
-‵‵‵Ｃ
+```C
 #include <GL/glut.h>
 #include <stdio.h>//為了printf,fprintf,fopen,fclose
 float angle[20],oldX=0;
@@ -2505,7 +2505,7 @@ int main(int argc,char**argv)
     glutDisplayFunc( display );
     glutMainLoop();
 }
-‵‵‵
+```
 # Step03-1 運鏡
 -打開老師的網址，下載win32&data，data解壓縮後放進解壓縮後的window資料夾裡:打開Projection.exe
 -gluLookAt()裡面的三個參數:
